@@ -1,4 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using RealEstateManagement.Infrastructure.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Get the Connection string
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Register the DbContext
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
 // Add services to the container.
 builder.Services.AddRazorPages();
