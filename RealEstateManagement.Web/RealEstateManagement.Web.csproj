@@ -6,4 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RealEstateManagement.Core\RealEstateManagement.Core.csproj" />
+    <ProjectReference Include="..\RealEstateManagement.Infrastructure\RealEstateManagement.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
