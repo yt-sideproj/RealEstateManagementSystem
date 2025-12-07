@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using RealEstateManagement.Core.Interfaces;
 using RealEstateManagement.Infrastructure.Data;
 using RealEstateManagement.Infrastructure.Repositories;
+using RealEstateManagement.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IHouseRepository, HouseRepository>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IHouseService, HouseService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
