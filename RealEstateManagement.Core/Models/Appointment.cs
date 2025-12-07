@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RealEstateProject.Core.Enums;
 
 namespace RealEstateManagement.Core.Models
 {
@@ -16,7 +17,7 @@ namespace RealEstateManagement.Core.Models
         [Required]
         public DateTime VisitDate { get; set; }
 
-        public int Status { get; set; } = 0; // 0:Pending, 1:Confirmed, 2:Completed
+        public AppointmentStatus Status { get; set; } = AppointmentStatus.Pending;
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
