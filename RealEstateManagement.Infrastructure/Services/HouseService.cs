@@ -58,8 +58,17 @@ namespace RealEstateManagement.Infrastructure.Services
                         }
                     }
 
+                    existingHouse.Title = house.Title;
+                    existingHouse.Price = house.Price;
+                    existingHouse.SquareMeters = house.SquareMeters;
+                    existingHouse.City = house.City;
+                    existingHouse.District = house.District;
+                    existingHouse.DetailAddress = house.DetailAddress;
+                    existingHouse.Description = house.Description;
+                    existingHouse.IsActive = house.IsActive;
+
                     // 更新房源
-                    await _houseRepo.UpdateAsync(house);
+                    await _houseRepo.UpdateAsync(existingHouse);
 
                     scope.Complete();
                 }
