@@ -23,7 +23,16 @@ namespace RealEstateManagement.Core.Models
         public decimal Price { get; set; } // 單位：萬
 
         [Required]
-        public required string Address { get; set; }
+        [StringLength(20)]
+        public required string City { get; set; } // 縣市 (e.g. 台北市)
+
+        [Required]
+        [StringLength(20)]
+        public required string District { get; set; } // 行政區 (e.g. 大安區)
+
+        [Required]
+        [StringLength(100)]
+        public required string DetailAddress { get; set; }// 詳細地址 (e.g. 信義路三段100號)
 
         public int SquareMeters { get; set; }
 
@@ -35,5 +44,9 @@ namespace RealEstateManagement.Core.Models
 
         // 導覽屬性
         public virtual ICollection<Appointment>? Appointments { get; set; }
+
+        // [Helper] 方便之後顯示完整地址 (唯讀屬性)
+        [NotMapped] // 不要存到資料庫
+        public string FullAddress => $"{City}{District}{DetailAddress}";
     }
 }
