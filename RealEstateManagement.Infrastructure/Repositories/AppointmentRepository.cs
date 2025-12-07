@@ -2,6 +2,7 @@
 using RealEstateManagement.Core.Interfaces;
 using RealEstateManagement.Core.Models;
 using RealEstateManagement.Infrastructure.Data;
+using RealEstateProject.Core.Enums;
 
 namespace RealEstateManagement.Infrastructure.Repositories
 {
@@ -50,8 +51,9 @@ namespace RealEstateManagement.Infrastructure.Repositories
 
             if (appointment != null)
             {
-                // 執行硬刪除
-                _context.Appointments.Remove(appointment);
+                // 執行軟刪除
+                appointment.Status = AppointmentStatus.Cancelled;
+                _context.Appointments.Update(appointment);
                 await _context.SaveChangesAsync();
             }
         }
