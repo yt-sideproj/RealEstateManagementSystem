@@ -1,81 +1,45 @@
 ﻿@model RealEstateManagement.Core.Models.House
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "刪除房源";
 }
 
-<h1>Delete</h1>
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card shadow mb-4 border-left-danger">
+            <div class="card-header py-3 bg-danger text-white">
+                <h6 class="m-0 font-weight-bold"><i class="fas fa-exclamation-triangle me-1"></i> 刪除確認</h6>
+            </div>
+            <div class="card-body text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-trash-alt fa-4x text-gray-300 mb-3 text-danger"></i>
+                    <h4 class="text-dark font-weight-bold">您確定要刪除此房源嗎？</h4>
+                    <p class="text-muted">此動作將無法復原，且相關預約紀錄將會被一併取消。</p>
+                </div>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>House</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.City)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.District)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.District)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DetailAddress)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DetailAddress)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SquareMeters)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SquareMeters)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsDeleted)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+                <div class="bg-light p-3 rounded text-start mb-4 mx-auto" style="max-width: 400px;">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-bold">房源標題:</span>
+                        <span>@Model.Title</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-bold">總價:</span>
+                        <span class="text-danger fw-bold">@Model.Price.ToString("N0") 萬</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold">地點:</span>
+                        <span>@Model.City @Model.District</span>
+                    </div>
+                </div>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <a asp-action="Index" class="btn btn-light me-2">取消，返回列表</a>
+                    <button type="submit" class="btn btn-danger shadow-sm px-4">
+                        <i class="fas fa-check me-1"></i> 確認刪除
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

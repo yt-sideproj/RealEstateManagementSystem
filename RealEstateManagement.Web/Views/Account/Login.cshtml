@@ -1,53 +1,97 @@
 ﻿@{
-    Layout = null; // 登入頁不要套用後台 Layout
+    Layout = null;
     ViewData["Title"] = "後台登入";
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="zh-hant">
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>後台管理系統 - 登入</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-color: #4e73df;
+            background-image: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
+            background-size: cover;
             height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Nunito', sans-serif;
         }
 
-        .login-card {
+        .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.3);
+            overflow: hidden;
             width: 100%;
             max-width: 400px;
-            padding: 2rem;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            background-color: #fff;
+            border-bottom: none;
+            padding-top: 2rem;
+            text-align: center;
+        }
+
+        .btn-login {
+            border-radius: 10rem;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 0.05rem;
+        }
+
+        .form-control-user {
+            border-radius: 10rem;
+            padding: 1.5rem 1rem;
         }
     </style>
 </head>
 <body>
-    <div class="login-card">
-        <h3 class="text-center mb-4">房產系統後台</h3>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9 d-flex justify-content-center">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4 fw-bold">🏠 房產管理系統</h1>
+                                <p class="text-muted mb-4">歡迎回來，請登入您的帳號</p>
+                            </div>
 
-        @if (ViewBag.Error != null)
-        {
-            <div class="alert alert-danger">@ViewBag.Error</div>
-        }
+                            @if (ViewBag.Error != null)
+                            {
+                                <div class="alert alert-danger text-center small py-2">
+                                    <i class="fas fa-exclamation-triangle me-1"></i> @ViewBag.Error
+                                </div>
+                            }
 
-        <form method="post" action="/Account/Login">
-            <div class="mb-3">
-                <label>帳號</label>
-                <input type="text" name="username" class="form-control" placeholder="admin" required />
+                            <form class="user" method="post" action="/Account/Login">
+                                <div class="form-group mb-3">
+                                    <input type="text" name="username" class="form-control form-control-user" placeholder="員工編號 (如: admin)" required autofocus>
+                                </div>
+                                <div class="form-group mb-4">
+                                    <input type="password" name="password" class="form-control form-control-user" placeholder="密碼" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-login w-100 shadow">
+                                    登入系統
+                                </button>
+                            </form>
+                            <hr>
+                            <div class="text-center">
+                                <a class="small text-decoration-none" href="#">忘記密碼?</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label>密碼</label>
-                <input type="password" name="password" class="form-control" placeholder="1234" required />
-            </div>
-            <button type="submit" class="btn btn-primary w-100">登入</button>
-        </form>
+        </div>
     </div>
 </body>
 </html>

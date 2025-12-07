@@ -3,63 +3,79 @@
 
 @{
     ViewData["Title"] = "房源列表";
-    // 取得當前登入者的 ID
     var currentAgentId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>房源列表</h2>
-    <a asp-action="Create" class="btn btn-primary">新增房源</a>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">房源管理</h1>
+    <a asp-action="Create" class="btn btn-primary shadow-sm">
+        <i class="fas fa-plus fa-sm text-white-50 me-1"></i> 新增房源
+    </a>
 </div>
 
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        @TempData["Error"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">所有房源列表</h6>
     </div>
-}
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                <thead class="table-light">
+                    <tr>
+                        <th>標題</th>
+                        <th>區域</th>
+                        <th>總價 (萬)</th>
+                        <th>狀態</th>
+                        <th>負責人</th>
+                        <th style="width: 200px;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@item.Title</td>
+                            <td><span class="badge bg-light text-dark border">@item.City</span> @item.District</td>
+                            <td class="text-primary fw-bold">@item.Price.ToString("N0")</td>
+                            <td>
+                                @if (item.IsActive)
+                                {
+                                    <span class="badge bg-success"><i class="fas fa-check me-1"></i>上架中</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary"><i class="fas fa-pause me-1"></i>已下架</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 30px; height: 30px;">
+                                        @(item.Agent?.Name?.Substring(0,1) ?? "?")
+                                    </div>
+                                    <span>@(item.Agent?.Name ?? "未知")</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm text-white" title="詳情">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
 
-<table class="table table-striped table-hover">
-    <thead>
-        <tr>
-            <th>標題</th>
-            <th>區域</th>
-            <th>總價 (萬)</th>
-            <th>狀態</th>
-            <th>負責人</th> <th>操作</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Title</td>
-                <td>@item.City @item.District</td>
-                <td>@item.Price.ToString("N0")</td>
-                <td>
-                    @if (item.IsActive)
-                    {
-                        <span class="badge bg-success">上架中</span>
+                                    @if (currentAgentId != null && item.AgentId.ToString() == currentAgentId)
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm text-white" title="編輯">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" title="刪除">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
                     }
-                    else
-                    {
-                        <span class="badge bg-secondary">已下架</span>
-                    }
-                </td>
-                <td>
-                    @(item.Agent?.Name ?? "未知")
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm text-white">詳情</a> 
-
-                    @if (currentAgentId != null && item.AgentId.ToString() == currentAgentId)
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">編輯</a> 
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">刪除</a>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,77 +1,105 @@
 ﻿@model RealEstateManagement.Core.Models.House
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "編輯房源";
 }
 
-<h1>Edit</h1>
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow mb-4 border-left-warning">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-edit me-1"></i> 編輯房源資料</h6>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="fas fa-arrow-left me-1"></i> 返回列表</a>
+            </div>
+            <div class="card-body">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="AgentId" /> 
+                    <input type="hidden" asp-for="CreatedAt" />
 
-<h4>House</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                    <div class="alert alert-light border d-flex align-items-center mb-4">
+                        <div class="form-check form-switch ms-2">
+                            <input class="form-check-input" type="checkbox" role="switch" asp-for="IsActive">
+                            <label class="form-check-label fw-bold" asp-for="IsActive">目前狀態：上架中</label>
+                        </div>
+                        <div class="ms-auto text-muted small">
+                            <i class="fas fa-info-circle me-1"></i> 關閉此開關將隱藏房源
+                        </div>
+                    </div>
+
+                    <h6 class="text-secondary text-uppercase small font-weight-bold mb-3">基本資訊</h6>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label asp-for="Title" class="form-label fw-bold">房源標題</label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Price" class="form-label fw-bold">總價 (萬元)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input asp-for="Price" class="form-control" type="number" min="0" />
+                            </div>
+                            <span asp-validation-for="Price" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="SquareMeters" class="form-label fw-bold">坪數</label>
+                            <div class="input-group">
+                                <input asp-for="SquareMeters" class="form-control" type="number" min="0" />
+                                <span class="input-group-text">坪</span>
+                            </div>
+                            <span asp-validation-for="SquareMeters" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+                    <h6 class="text-secondary text-uppercase small font-weight-bold mb-3">地點資訊</h6>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="City" class="form-label fw-bold">縣市</label>
+                            <select asp-for="City" class="form-select">
+                                <option value="台北市">台北市</option>
+                                <option value="新北市">新北市</option>
+                                <option value="桃園市">桃園市</option>
+                                <option value="台中市">台中市</option>
+                                <option value="台南市">台南市</option>
+                                <option value="高雄市">高雄市</option>
+                            </select>
+                            <span asp-validation-for="City" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="District" class="form-label fw-bold">行政區</label>
+                            <input asp-for="District" class="form-control" />
+                            <span asp-validation-for="District" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label asp-for="DetailAddress" class="form-label fw-bold">詳細地址</label>
+                            <input asp-for="DetailAddress" class="form-control" />
+                            <span asp-validation-for="DetailAddress" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+                    <h6 class="text-secondary text-uppercase small font-weight-bold mb-3">詳細描述</h6>
+                    
+                    <div class="mb-3">
+                        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a asp-action="Index" class="btn btn-light me-md-2">取消</a>
+                        <button type="submit" class="btn btn-warning text-white px-4 shadow-sm"><i class="fas fa-save me-1"></i> 更新資料</button>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="District" class="control-label"></label>
-                <input asp-for="District" class="form-control" />
-                <span asp-validation-for="District" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DetailAddress" class="control-label"></label>
-                <input asp-for="DetailAddress" class="form-control" />
-                <span asp-validation-for="DetailAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SquareMeters" class="control-label"></label>
-                <input asp-for="SquareMeters" class="form-control" />
-                <span asp-validation-for="SquareMeters" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
