@@ -1,0 +1,89 @@
+﻿@using RealEstateManagement.Core.Enums
+@model IEnumerable<RealEstateManagement.Core.Models.Appointment>
+
+@{
+    ViewData["Title"] = "預約管理";
+}
+
+<h2>預約管理看板</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>預約時間</th>
+            <th>房源名稱</th>
+            <th>客戶姓名</th>
+            <th>電話</th>
+            <th>目前狀態</th>
+            <th>管理操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.VisitDate.ToString("yyyy/MM/dd HH:mm")</td>
+                
+                <td>
+                    @if(item.House != null) {
+                        <a href="/Houses/Details/@item.HouseId">@item.House.Title</a>
+                    } else {
+                        <span class="text-danger">(房源已刪除)</span>
+                    }
+                </td>
+                
+                <td>
+                    @if(item.Customer != null) {
+                        @item.Customer.Name
+                    } else {
+                        <span class="text-muted">未知客戶</span>
+                    }
+                </td>
+                <td>@(item.Customer?.Phone ?? "-")</td>
+
+                <td>
+                    @switch (item.Status)
+                    {
+                        case AppointmentStatus.Pending:
+                            <span class="badge bg-warning text-dark">待確認</span>
+                            break;
+                        case AppointmentStatus.Confirmed:
+                            <span class="badge bg-success">已確認</span>
+                            break;
+                        case AppointmentStatus.Cancelled:
+                            <span class="badge bg-secondary">已取消</span>
+                            break;
+                        case AppointmentStatus.Completed:
+                            <span class="badge bg-info text-dark">已完成</span>
+                            break;
+                    }
+                </td>
+
+                <td>
+                    @if (item.Status == AppointmentStatus.Pending)
+                    {
+                        <form asp-action="Confirm" asp-route-id="@item.Id" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-success">接受</button>
+                        </form>
+                        <form asp-action="Cancel" asp-route-id="@item.Id" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger">拒絕</button>
+                        </form>
+                    }
+                    else if (item.Status == AppointmentStatus.Confirmed)
+                    {
+                         <form asp-action="Complete" asp-route-id="@item.Id" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-outline-primary">完成帶看</button>
+                        </form>
+                        <form asp-action="Cancel" asp-route-id="@item.Id" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">取消</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span class="text-muted">-</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
