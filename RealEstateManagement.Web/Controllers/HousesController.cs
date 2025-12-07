@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RealEstateManagement.Core.Interfaces;
 using RealEstateManagement.Core.Models;
+using System.Security.Claims;
 
 namespace RealEstateManagement.Web.Controllers
 {
@@ -14,6 +15,17 @@ namespace RealEstateManagement.Web.Controllers
         public HousesController(IHouseService houseService)
         {
             _houseService = houseService;
+        }
+
+        // 取得當前登入的房仲 ID
+        private int GetCurrentAgentId()
+        {
+            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null && int.TryParse(claim.Value, out int agentId))
+            {
+                return agentId;
+            }
+            throw new UnauthorizedAccessException("無法識別使用者身分，請重新登入");
         }
 
         // GET: Houses
@@ -43,6 +55,11 @@ namespace RealEstateManagement.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(House house)
         {
+            // 移除 ModelState 驗證 Agent 錯誤
+            ModelState.Remove("Agent");
+            // 自動綁定當前 Agent
+            house.AgentId = GetCurrentAgentId();
+
             if (ModelState.IsValid)
             {
                 await _houseService.AddHouseAsync(house);
@@ -57,6 +74,14 @@ namespace RealEstateManagement.Web.Controllers
             if (id == null) return NotFound();
             var house = await _houseService.GetHouseByIdAsync(id.Value);
             if (house == null) return NotFound();
+
+            // 只能編輯自己的房源
+            if (house.AgentId != GetCurrentAgentId())
+            {
+                TempData["Error"] = "您無權編輯其他人的房源！";
+                return RedirectToAction(nameof(Index));
+            }
+
             return View(house);
         }
 
@@ -66,6 +91,15 @@ namespace RealEstateManagement.Web.Controllers
         public async Task<IActionResult> Edit(int id, House house)
         {
             if (id != house.Id) return NotFound();
+
+            // 檢查身分
+            var existingHouse = await _houseService.GetHouseByIdAsync(id);
+            if (existingHouse == null || existingHouse.AgentId != GetCurrentAgentId()) return Unauthorized();
+
+            // 確保 AgentId 不被篡改
+            house.AgentId = existingHouse.AgentId;
+            // 移除 ModelState 驗證 Agent 錯誤
+            ModelState.Remove("Agent");
 
             if (ModelState.IsValid)
             {
@@ -90,6 +124,14 @@ namespace RealEstateManagement.Web.Controllers
             if (id == null) return NotFound();
             var house = await _houseService.GetHouseByIdAsync(id.Value);
             if (house == null) return NotFound();
+
+            // 只能刪除自己的房源
+            if (house.AgentId != GetCurrentAgentId())
+            {
+                TempData["Error"] = "您無權刪除其他人的房源！";
+                return RedirectToAction(nameof(Index));
+            }
+
             return View(house);
         }
 
@@ -98,6 +140,10 @@ namespace RealEstateManagement.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var house = await _houseService.GetHouseByIdAsync(id);
+            // 檢查身分
+            if (house == null || house.AgentId != GetCurrentAgentId()) return Unauthorized();
+
             await _houseService.DeleteHouseAsync(id);
             return RedirectToAction(nameof(Index));
         }
