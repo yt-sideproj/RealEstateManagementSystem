@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using RealEstateManagement.Core.Interfaces;
 using RealEstateManagement.Infrastructure.Data;
 using RealEstateManagement.Infrastructure.Helpers;
@@ -19,6 +20,44 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    // 1. 定義 API 文件資訊
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "RealEstate API",
+        Version = "v1",
+        Description = "房產管理系統 API - 包含 JWT 驗證"
+    });
+
+    // 2. [關鍵] 設定 Swagger 支援 JWT Bearer 驗證 (讓畫面出現鎖頭按鈕)
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "請輸入 JWT Token。例如: eyJhbGciOiJIUz..."
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
@@ -78,7 +117,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -86,13 +124,19 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+else
+{
+    // [新增] 在開發模式啟用 Swagger UI
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();  // 驗證
+app.UseAuthentication();  // 驗證
 app.UseAuthorization();  // 授權
 
 app.MapControllerRoute(
