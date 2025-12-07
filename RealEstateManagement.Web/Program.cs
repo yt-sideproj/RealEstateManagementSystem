@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RealEstateManagement.Infrastructure.Data;
+using RealEstateManagement.Core.Interfaces;
+using RealEstateManagement.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<IHouseRepository, HouseRepository>();
 
 var app = builder.Build();
 
