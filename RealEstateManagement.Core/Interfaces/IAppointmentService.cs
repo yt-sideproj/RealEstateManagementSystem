@@ -15,6 +15,9 @@ namespace RealEstateManagement.Core.Interfaces
         // 更新預約狀態
         Task UpdateStatusAsync(int id, AppointmentStatus status);
 
+        // 更新預約時間
+        Task RescheduleAppointmentAsync(int id, DateTime newDate);
+
         // 取消預約 (真刪除)
         Task DeleteAppointmentAsync(int id);
     }

@@ -42,6 +42,19 @@ namespace RealEstateManagement.Infrastructure.Services
             }
         }
 
+        public async Task RescheduleAppointmentAsync(int id, DateTime newDate)
+        {
+            var appointment = await _appointmentRepo.GetByIdAsync(id);
+            if (appointment != null)
+            {
+                appointment.VisitDate = newDate;
+                // 如果原本是 "已確認"，改期後通常要變回 "待確認" 讓房仲重新審核
+                appointment.Status = AppointmentStatus.Pending;
+
+                await _appointmentRepo.UpdateAsync(appointment);
+            }
+        }
+
         public async Task DeleteAppointmentAsync(int id)
         {
             // 這裡直接呼叫 Repository 的刪除
