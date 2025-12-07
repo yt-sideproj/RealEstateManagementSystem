@@ -46,7 +46,7 @@ namespace RealEstateManagement.Infrastructure.Repositories
             if (house != null)
             {
                 // 軟刪除 (Soft Delete) 或是直接刪除
-                house.IsActive = false;
+                house.IsDeleted = true;
                 _context.Houses.Update(house);
                 //_context.Houses.Remove(house);
                 await _context.SaveChangesAsync();

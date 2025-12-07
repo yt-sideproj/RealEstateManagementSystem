@@ -43,6 +43,10 @@ namespace RealEstateManagement.Infrastructure.Data
             modelBuilder.Entity<House>()
                 .Property(h => h.Price)
                 .HasPrecision(18, 2);
+
+            // 全域篩選：預設自動過濾掉已刪除的資料
+            // GetAllAsync() 自動看不到被刪除的房子
+            modelBuilder.Entity<House>().HasQueryFilter(h => !h.IsDeleted);
         }
     }
 }

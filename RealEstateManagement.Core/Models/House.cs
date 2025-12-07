@@ -38,7 +38,9 @@ namespace RealEstateManagement.Core.Models
 
         public string? Description { get; set; } // 可空
 
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; } = true; // 是否上架
+
+        public bool IsDeleted { get; set; } = false; // 是否已刪除
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
