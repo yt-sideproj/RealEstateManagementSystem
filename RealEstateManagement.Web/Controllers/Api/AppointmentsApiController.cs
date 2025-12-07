@@ -79,17 +79,25 @@ namespace RealEstateManagement.Web.Controllers.Api
             if (customerId == null || !customerId.HasValue)
                 return Unauthorized(new { message = "無效的使用者身分" });
 
-            // 取得所有預約並篩選 (如果 Service 有 GetByCustomerId 會更好，這裡先用 LINQ 過濾)
+            // 取得所有預約並篩選
             var allAppts = await _apptService.GetAllAppointmentsAsync();
+
+            // 取得目前的 Base URL
+            var baseUrl = $"{Request.Scheme}://{Request.Host}";
+
             var myAppts = allAppts
                 .Where(a => a.CustomerId == customerId.Value)
                 .Select(a => new
                 {
                     a.Id,
                     a.VisitDate,
-                    Status = a.Status.ToString(), // 轉成字串顯示 (Pending/Confirmed...)
+                    Status = a.Status.ToString(),
                     HouseTitle = a.House?.Title,
-                    Address = a.House?.FullAddress // 記得 House Model 有加這個 Helper 屬性嗎？
+                    Address = a.House?.FullAddress,
+                    // [新增] 圖片完整路徑
+                    ImageUrl = a.House != null
+                        ? $"{baseUrl}/house_images/{a.House.Id}.jpg"
+                        : null
                 })
                 .OrderByDescending(x => x.VisitDate);
 

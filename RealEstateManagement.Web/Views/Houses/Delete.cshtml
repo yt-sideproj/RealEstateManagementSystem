@@ -6,35 +6,37 @@
 
 <div class="row justify-content-center">
     <div class="col-lg-6">
-        <div class="card shadow mb-4 border-left-danger">
+        <div class="card shadow mb-4 border-start-danger border-5">
             <div class="card-header py-3 bg-danger text-white">
                 <h6 class="m-0 font-weight-bold"><i class="fas fa-exclamation-triangle me-1"></i> 刪除確認</h6>
             </div>
-            <div class="card-body text-center py-5">
+            <div class="card-body text-center py-4">
                 <div class="mb-4">
-                    <i class="fas fa-trash-alt fa-4x text-gray-300 mb-3 text-danger"></i>
-                    <h4 class="text-dark font-weight-bold">您確定要刪除此房源嗎？</h4>
-                    <p class="text-muted">此動作將無法復原，且相關預約紀錄將會被一併取消。</p>
+                    <div class="text-danger mb-3">
+                        <i class="fas fa-trash-alt fa-4x"></i>
+                    </div>
+                    <h3 class="text-dark font-weight-bold">您確定要刪除此房源嗎？</h3>
+                    <p class="text-muted">此動作將無法復原，且相關圖片與預約紀錄將會被一併移除。</p>
                 </div>
 
-                <div class="bg-light p-3 rounded text-start mb-4 mx-auto" style="max-width: 400px;">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span class="fw-bold">房源標題:</span>
-                        <span>@Model.Title</span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span class="fw-bold">總價:</span>
-                        <span class="text-danger fw-bold">@Model.Price.ToString("N0") 萬</span>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <span class="fw-bold">地點:</span>
-                        <span>@Model.City @Model.District</span>
+                <div class="card mx-auto mb-4 border shadow-sm" style="max-width: 400px; overflow: hidden;">
+                    <img src="/house_images/@(Model.Id).jpg?v=@DateTime.Now.Ticks"
+                         class="card-img-top"
+                         style="height: 200px; object-fit: cover;"
+                         onerror="this.src='https://placehold.co/400x200?text=No+Image'" />
+                    <div class="card-body text-start bg-light">
+                        <h5 class="card-title fw-bold text-dark">@Model.Title</h5>
+                        <p class="card-text text-muted small mb-2"><i class="fas fa-map-marker-alt me-1"></i> @Model.FullAddress</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-primary">@Model.SquareMeters 坪</span>
+                            <span class="text-danger fw-bold fs-5">@Model.Price.ToString("N0") 萬</span>
+                        </div>
                     </div>
                 </div>
 
-                <form asp-action="Delete">
+                <form asp-action="Delete" class="mt-4">
                     <input type="hidden" asp-for="Id" />
-                    <a asp-action="Index" class="btn btn-light me-2">取消，返回列表</a>
+                    <a asp-action="Index" class="btn btn-outline-secondary me-2 px-4">取消，返回列表</a>
                     <button type="submit" class="btn btn-danger shadow-sm px-4">
                         <i class="fas fa-check me-1"></i> 確認刪除
                     </button>

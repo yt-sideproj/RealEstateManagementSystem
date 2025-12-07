@@ -1,4 +1,4 @@
-﻿@model RealEstateManagement.Core.Models.House
+﻿@model RealEstateManagement.Web.Models.HouseViewModel
 
 @{
     ViewData["Title"] = "新增房源";
@@ -7,15 +7,28 @@
 <div class="row justify-content-center">
     <div class="col-lg-8">
         <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-plus-circle me-1"></i> 新增房源資料</h6>
-                <a asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="fas fa-arrow-left me-1"></i> 返回列表</a>
+            <div class="card-header py-3 d-flex justify-content-between align-items-center bg-primary text-white">
+                <h6 class="m-0 font-weight-bold"><i class="fas fa-plus-circle me-1"></i> 新增房源資料</h6>
+                <a asp-action="Index" class="btn btn-light btn-sm text-primary fw-bold"><i class="fas fa-arrow-left me-1"></i> 返回列表</a>
             </div>
             <div class="card-body">
-                <form asp-action="Create">
-                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
 
-                    <h6 class="text-secondary text-uppercase small font-weight-bold mb-3">基本資訊</h6>
+                    <div class="mb-4 text-center">
+                        <div class="mb-2">
+                            <img id="imagePreview" src="https://placehold.co/600x400?text=Image+Preview"
+                                 class="img-fluid rounded border shadow-sm"
+                                 style="max-height: 300px; object-fit: cover;" />
+                        </div>
+                        <div class="d-inline-block">
+                            <label asp-for="ImageFile" class="form-label fw-bold text-primary">上傳房源封面照</label>
+                            <input asp-for="ImageFile" class="form-control" type="file" accept="image/*" onchange="previewImage(this)" />
+                            <span asp-validation-for="ImageFile" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <h6 class="text-secondary text-uppercase small font-weight-bold mb-3 border-bottom pb-2">基本資訊</h6>
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <label asp-for="Title" class="form-label fw-bold">房源標題</label>
@@ -43,9 +56,7 @@
                         </div>
                     </div>
 
-                    <hr class="my-4">
-                    <h6 class="text-secondary text-uppercase small font-weight-bold mb-3">地點資訊</h6>
-
+                    <h6 class="text-secondary text-uppercase small font-weight-bold mb-3 mt-4 border-bottom pb-2">地點資訊</h6>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label asp-for="City" class="form-label fw-bold">縣市</label>
@@ -72,16 +83,14 @@
                         </div>
                     </div>
 
-                    <hr class="my-4">
-                    <h6 class="text-secondary text-uppercase small font-weight-bold mb-3">詳細描述</h6>
-                    
+                    <h6 class="text-secondary text-uppercase small font-weight-bold mb-3 mt-4 border-bottom pb-2">詳細描述</h6>
                     <div class="mb-3">
                         <textarea asp-for="Description" class="form-control" rows="4" placeholder="請輸入屋況特色、周邊機能等描述..."></textarea>
                         <span asp-validation-for="Description" class="text-danger small"></span>
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                         <a asp-action="Index" class="btn btn-light me-md-2">取消</a>
+                        <a asp-action="Index" class="btn btn-light me-md-2">取消</a>
                         <button type="submit" class="btn btn-primary px-4 shadow-sm"><i class="fas fa-save me-1"></i> 儲存房源</button>
                     </div>
                 </form>
@@ -91,5 +100,18 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('imagePreview').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 }
