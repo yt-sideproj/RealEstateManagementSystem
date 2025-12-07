@@ -15,7 +15,8 @@ namespace RealEstateManagement.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            // 直接跳轉到 "房源管理系統"
+            return RedirectToAction("Index", "Houses");
         }
 
         public IActionResult Privacy()
