@@ -18,6 +18,7 @@ namespace RealEstateManagement.Infrastructure.Repositories
         {
             // 使用 AsNoTracking 提升查詢效能 (Read-Only)
             return await _context.Houses
+                .Include(h => h.Agent)
                 .OrderByDescending(h => h.CreatedAt) // 最新的排前面
                 .AsNoTracking()
                 .ToListAsync();
@@ -25,7 +26,9 @@ namespace RealEstateManagement.Infrastructure.Repositories
 
         public async Task<House?> GetByIdAsync(int id)
         {
-            return await _context.Houses.FindAsync(id);
+            return await _context.Houses
+                .Include(h => h.Agent)
+                .FirstOrDefaultAsync(h => h.Id == id);
         }
 
         public async Task AddAsync(House house)
