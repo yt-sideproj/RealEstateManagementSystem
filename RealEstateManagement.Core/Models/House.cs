@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RealEstateManagement.Core.Models
 {
@@ -43,6 +38,11 @@ namespace RealEstateManagement.Core.Models
         public bool IsDeleted { get; set; } = false; // 是否已刪除
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        [ForeignKey("AgentId")]
+        public int AgentId { get; set; } // 房仲
+
+        public virtual Agent? Agent { get; set; }
 
         // 導覽屬性
         public virtual ICollection<Appointment>? Appointments { get; set; }
