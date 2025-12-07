@@ -7,6 +7,8 @@ namespace RealEstateManagement.Core.Interfaces
     {
         Task<IEnumerable<Appointment>> GetAllAppointmentsAsync();
 
+        Task<Appointment?> GetAppointmentByIdAsync(int id);
+
         // 建立預約
         Task AddAppointmentAsync(Appointment appointment);
 

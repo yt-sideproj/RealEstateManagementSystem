@@ -18,6 +18,11 @@ namespace RealEstateManagement.Infrastructure.Services
             return await _appointmentRepo.GetAllAsync();
         }
 
+        public async Task<Appointment?> GetAppointmentByIdAsync(int id)
+        {
+            return await _appointmentRepo.GetByIdAsync(id);
+        }
+
         public async Task AddAppointmentAsync(Appointment appointment)
         {
             // 預約建立時預設為 Pending
