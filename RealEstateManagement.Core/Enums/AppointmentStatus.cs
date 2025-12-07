@@ -1,4 +1,4 @@
-﻿namespace RealEstateProject.Core.Enums
+﻿namespace RealEstateManagement.Core.Enums
 {
     public enum AppointmentStatus
     {

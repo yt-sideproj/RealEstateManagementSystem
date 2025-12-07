@@ -1,7 +1,7 @@
 ﻿using RealEstateManagement.Core.DTOs;
 using RealEstateManagement.Core.Interfaces;
 using RealEstateManagement.Core.Models;
-using RealEstateProject.Core.Enums;
+using RealEstateManagement.Core.Enums;
 using System.Transactions;
 
 namespace RealEstateManagement.Infrastructure.Services

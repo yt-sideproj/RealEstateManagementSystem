@@ -1,5 +1,5 @@
 ﻿using RealEstateManagement.Core.Models;
-using RealEstateProject.Core.Enums;
+using RealEstateManagement.Core.Enums;
 
 namespace RealEstateManagement.Core.Interfaces
 {

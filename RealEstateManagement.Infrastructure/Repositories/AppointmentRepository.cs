@@ -2,7 +2,7 @@
 using RealEstateManagement.Core.Interfaces;
 using RealEstateManagement.Core.Models;
 using RealEstateManagement.Infrastructure.Data;
-using RealEstateProject.Core.Enums;
+using RealEstateManagement.Core.Enums;
 
 namespace RealEstateManagement.Infrastructure.Repositories
 {
