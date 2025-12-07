@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RealEstateManagement.Core.Interfaces;
 using RealEstateManagement.Core.Enums;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RealEstateManagement.Web.Controllers
 {
+    [Authorize]
     public class AppointmentsController : Controller
     {
         private readonly IAppointmentService _apptService;

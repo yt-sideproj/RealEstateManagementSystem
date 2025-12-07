@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RealEstateManagement.Core.Interfaces;
 using RealEstateManagement.Core.Models;
 
 namespace RealEstateManagement.Web.Controllers
 {
+    [Authorize]
     public class HousesController : Controller
     {
         private readonly IHouseService _houseService;
